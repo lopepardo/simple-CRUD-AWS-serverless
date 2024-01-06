@@ -4,7 +4,7 @@ const ddbClient = require("../services/dynamodbClient");
 
 const TASK_TABLE = process.env.TASK_TABLE;
 
-exports.updateTask = async (event) => {
+exports.handler = async (event) => {
   try {
     if (!event.body) {
       return {
