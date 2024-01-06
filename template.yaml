@@ -1,0 +1,175 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Dynamo CRUD App
+
+  Simple CRUD using AWS Lambda with NodeJS, Api Gateway and DynamoDB, 
+  leveraging AWS SAM for project infrastructure management.
+
+Globals:
+  Function:
+    Tracing: Active
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        TASK_TABLE: !Ref TaskTable
+
+Resources:
+  # DynamoDB Table
+  TaskTable:
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: Task
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  # API Gateway
+  TaskRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Dev
+
+  # Lambda Functions
+  PaginationTasks:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: src/functions/paginationTasks.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref TaskTable
+      Events:
+        GetTasksApi:
+          Type: Api
+          Properties:
+            Path: /pagination
+            Method: POST
+            RestApiId: !Ref TaskRestApi
+
+  GetTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: src/functions/getTask.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref TaskTable
+      Events:
+        GetTasksApi:
+          Type: Api
+          Properties:
+            Path: /search
+            Method: POST
+            RestApiId: !Ref TaskRestApi
+
+  InsertTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: src/functions/insertTask.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref TaskTable
+      Events:
+        InsertTaskApi:
+          Type: Api
+          Properties:
+            Path: /insert
+            Method: POST
+            RestApiId: !Ref TaskRestApi
+
+  UpdateTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: src/functions/updateTask.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        DynamoDBWritePolicy:
+          TableName: !Ref TaskTable
+      Events:
+        UpdateTaskApi:
+          Type: Api
+          Properties:
+            Path: /update
+            Method: PUT
+            RestApiId: !Ref TaskRestApi
+
+  DeleteTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: app
+      Handler: src/functions/deleteTask.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:DeleteItem
+            Resource: !GetAtt TaskTable.Arn
+      Events:
+        DeleteTaskApi:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: DELETE
+            RestApiId: !Ref TaskRestApi
+
+Outputs:
+  TaskApiEndpoint:
+    Description: "API Gateway endpoint URL for Dev stage for Task Get function"
+    Value: !Sub "https://${TaskRestApi}.execute-api.${AWS::Region}.amazonaws.com/Dev/"
+
+  DynamoDBTableName:
+    Description: "DynamoDB Table Name"
+    Value: !Ref TaskTable
+
+  PaginationTasks:
+    Description: "PaginationTasks Lambda Function ARN"
+    Value: !GetAtt PaginationTasks.Arn
+
+  GetTask:
+    Description: "GetTasks Lambda Function ARN"
+    Value: !GetAtt GetTask.Arn
+
+  InsertTask:
+    Description: "InsertTask Lambda Function ARN"
+    Value: !GetAtt InsertTask.Arn
+
+  UpdateTask:
+    Description: "UpdateTask Lambda Function ARN"
+    Value: !GetAtt UpdateTask.Arn
+
+  DeleteTask:
+    Description: "DeleteTask Lambda Function ARN"
+    Value: !GetAtt DeleteTask.Arn
