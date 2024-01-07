@@ -1,36 +1,30 @@
-import { getParamsTemplate } from "../utils/dynamodbUtils.js";
-import dynamodb from "./dynamodbClient.js";
+import dynamodb from "./client.js";
+import { PUT_PARAMS_TEMPLATE, GET_PARAMS_TEMPLATE } from "./constants.js";
 
 const TASK_TABLE = process.env.TASK_TABLE;
 
-// const putDynamodbItem = (params) => {
-//   const dynamoDb = new AWS.DynamoDB.DocumentClient();
-//   return new Promise((resolve, reject) => {
-//     dynamoDb.put(params, (error, data) => {
-//       if (error) {
-//         console.log(error);
-//         const httpError = new ErrorHandler(
-//           StatusCodes.SERVICE_UNAVAILABLE,
-//           "Could not put item to DynamoDB"
-//         );
-//         reject(httpError);
-//       } else {
-//         resolve(params);
-//       }
-//     });
-//   });
-// };
+export const createItem = async (objectItem) => {
+  const params = structuredClone(PUT_PARAMS_TEMPLATE);
+  params.TableName = TASK_TABLE;
+  params.Item = objectItem;
+  params.ReturnValues = "NONE";
+  console.log("PARAMS --> ", JSON.stringify(params));
 
-export async function getItemByPartitionKey(pkName, pkValue) {
-  const params = structuredClone(getParamsTemplate);
+  await dynamodb.put(params);
+};
+
+export const getItemByPartitionKey = async (pkName, pkValue) => {
+  const params = structuredClone(GET_PARAMS_TEMPLATE);
   params.TableName = TASK_TABLE;
   params.KeyConditionExpression = `${pkName} = :id`;
   params.ExpressionAttributeValues = {
     ":id": pkValue,
   };
+  console.log("PARAMS --> ", params);
+
   const { Items } = await dynamodb.query(params);
   return Items;
-}
+};
 
 // const scanDynamodbTable = (params) => {
 //   const dynamoDb = new AWS.DynamoDB.DocumentClient();

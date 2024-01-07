@@ -1,0 +1,17 @@
+{
+  "name": "common-code-layer",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Common code layer for all lambda functions",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install && mkdir -p nodejs && cp -r node_modules nodejs/ && zip -r  {file-name}.zip nodejs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.485.0",
+    "@aws-sdk/lib-dynamodb": "^3.485.0"
+  }
+}
