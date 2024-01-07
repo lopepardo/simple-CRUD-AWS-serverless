@@ -1,20 +1,8 @@
-const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
+import { DynamoDB } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
-const dynamodbClient = new DynamoDBClient({ region: "us-east-1" });
+const dynamodbClient = new DynamoDB({ region: process.env.REGION });
 
-const marshallOptions = {
-  convertEmptyValues: false,
-  removeUndefinedValues: false,
-  convertClassInstanceToMap: false,
-};
+const dynamodb = DynamoDBDocument.from(dynamodbClient);
 
-const unmarshallOptions = {
-  wrapNumbers: false,
-};
-
-const translateConfig = { marshallOptions, unmarshallOptions };
-
-const ddbClient = DynamoDBDocumentClient.from(dynamodbClient, translateConfig);
-
-module.exports = ddbClient;
+export default dynamodb;

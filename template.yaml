@@ -14,6 +14,7 @@ Globals:
     Environment:
       Variables:
         TASK_TABLE: !Ref TaskTable
+        REGION: !Ref AWS::Region
 
 Resources:
   # DynamoDB Table

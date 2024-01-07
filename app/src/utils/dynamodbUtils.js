@@ -1,9 +1,9 @@
-const createParamsTemplate = {
+export const createParamsTemplate = {
   TableName: null,
   Item: null,
 };
 
-const getParamsTemplate = {
+export const getParamsTemplate = {
   TableName: null,
   IndexName: null,
   KeyConditionExpression: null,
@@ -11,7 +11,7 @@ const getParamsTemplate = {
   ExpressionAttributeValues: null,
 };
 
-const updateParamsTemplate = {
+export const updateParamsTemplate = {
   TableName: null,
   Key: null,
   UpdateExpression: "SET ",
@@ -20,7 +20,7 @@ const updateParamsTemplate = {
   ReturnValues: "ALL_NEW",
 };
 
-const queryParamsTemplate = {
+export const queryParamsTemplate = {
   TableName: null,
   IndexName: null,
   KeyConditionExpression: null,
@@ -30,7 +30,7 @@ const queryParamsTemplate = {
   ScanIndexForward: null,
 };
 
-const generateDynamoExpressions = (objectData) => {
+export const generateDynamoExpressions = (objectData) => {
   let expression = "";
   let attributeNames = {};
   let attributeValues = {};
@@ -48,12 +48,4 @@ const generateDynamoExpressions = (objectData) => {
   expression = expression.slice(0, -1);
 
   return [expression, attributeNames, attributeValues];
-};
-
-module.exports = {
-  createParamsTemplate,
-  getParamsTemplate,
-  updateParamsTemplate,
-  queryParamsTemplate,
-  generateDynamoExpressions,
 };

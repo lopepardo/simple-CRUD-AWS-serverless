@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "dynamodb-crud-app",
   "version": "1.0.0",
   "description": "",
