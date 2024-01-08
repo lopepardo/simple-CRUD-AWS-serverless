@@ -137,29 +137,29 @@ Resources:
   #           Method: PUT
   #           RestApiId: !Ref TaskRestApi
 
-  # DeleteTask:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     CodeUri: app
-  #     Handler: src/functions/deleteTask.handler
-  #     Runtime: nodejs18.x
-  #     Timeout: 3
-  #     MemorySize: 128
-  #     EphemeralStorage:
-  #       Size: 512
-  #     Policies:
-  #       Statement:
-  #         - Effect: Allow
-  #           Action:
-  #             - dynamodb:DeleteItem
-  #           Resource: !GetAtt TaskTable.Arn
-  #     Events:
-  #       DeleteTaskApi:
-  #         Type: Api
-  #         Properties:
-  #           Path: /delete
-  #           Method: DELETE
-  #           RestApiId: !Ref TaskRestApi
+  DeleteTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/DeleteTask
+      Handler: handler.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:DeleteItem
+            Resource: !GetAtt TaskTable.Arn
+      Events:
+        DeleteTaskApi:
+          Type: Api
+          Properties:
+            Path: /delete
+            Method: DELETE
+            RestApiId: !Ref TaskRestApi
 
 Outputs:
   TaskApiEndpoint:
@@ -186,6 +186,6 @@ Outputs:
   #   Description: "UpdateTask Lambda Function ARN"
   #   Value: !GetAtt UpdateTask.Arn
 
-  # DeleteTask:
-  #   Description: "DeleteTask Lambda Function ARN"
-  #   Value: !GetAtt DeleteTask.Arn
+  DeleteTask:
+    Description: "DeleteTask Lambda Function ARN"
+    Value: !GetAtt DeleteTask.Arn

@@ -1,0 +1,21 @@
+{
+  "name": "delete-task-function",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Delete task function",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@middy/core": "^5.2.1",
+    "@middy/http-error-handler": "^5.2.1",
+    "@middy/http-json-body-parser": "^5.2.1",
+    "@middy/http-response-serializer": "^5.2.1",
+    "@middy/validator": "^5.2.1",
+    "http-errors": "^2.0.0"
+  }
+}

@@ -1,5 +1,9 @@
 import dynamodb from "./client.js";
-import { PUT_PARAMS_TEMPLATE, GET_PARAMS_TEMPLATE } from "./constants.js";
+import {
+  PUT_PARAMS_TEMPLATE,
+  GET_PARAMS_TEMPLATE,
+  DELETE_PARAMS_TEMPLATE,
+} from "./constants.js";
 
 const TASK_TABLE = process.env.TASK_TABLE;
 
@@ -26,23 +30,17 @@ export const getItemByPartitionKey = async (pkName, pkValue) => {
   return Items;
 };
 
-// const scanDynamodbTable = (params) => {
-//   const dynamoDb = new AWS.DynamoDB.DocumentClient();
-//   return new Promise((resolve, reject) => {
-//     dynamoDb.scan(params, function (error, data) {
-//       if (error) {
-//         console.log(error);
-//         const httpError = new ErrorHandler(
-//           StatusCodes.SERVICE_UNAVAILABLE,
-//           "Could not scan items from DynamoDB"
-//         );
-//         reject(httpError);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// };
+export const deleteItem = async (pkName, pkValue) => {
+  const params = structuredClone(DELETE_PARAMS_TEMPLATE);
+  params.TableName = TASK_TABLE;
+  params.Key = {
+    [pkName]: pkValue,
+  };
+
+  console.log("PARAMS --> ", params);
+  const result = await dynamodb.delete(params);
+  return !!result?.Attributes;
+};
 
 // const updateDynamodbItem = (updateParams) => {
 //   const dynamoDb = new AWS.DynamoDB.DocumentClient();

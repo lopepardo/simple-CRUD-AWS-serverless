@@ -23,12 +23,8 @@ export const UPDATE_PARAMS_TEMPLATE = {
 
 export const DELETE_PARAMS_TEMPLATE = {
   TableName: null,
-  IndexName: null,
-  KeyConditionExpression: null,
-  ExpressionAttributeValues: null,
-  FilterExpression: null,
-  ProjectionExpression: null,
-  ScanIndexForward: null,
+  Key: null,
+  ReturnValues: "ALL_OLD",
 };
 
 // export const generateDynamoExpressions = (objectData) => {

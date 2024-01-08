@@ -1,8 +1,3 @@
-// Archivo principal que contiene el handler de la función Lambda.
-// En este archivo, se realiza la preparación y configuración del entorno para el manejo de eventos Lambda.
-// Aquí se deben realizar tareas que no están directamente relacionadas con la lógica de negocio,
-// como validaciones, serialización de datos, etc., antes de pasar el control al controlador.
-
 import middy from "@middy/core";
 import validator from "@middy/validator";
 import httpErrorHandler from "@middy/http-error-handler";

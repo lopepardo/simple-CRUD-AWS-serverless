@@ -8,11 +8,11 @@ import createError from "http-errors";
 import { getItemByPartitionKey } from "/opt/dynamodb-utils/index.js";
 
 export default async (event) => {
-  const { tasksId } = event.body;
+  const { taskId } = event.body;
 
   let item;
   try {
-    item = await getItemByPartitionKey("id", tasksId);
+    item = await getItemByPartitionKey("id", taskId);
   } catch (error) {
     console.log("getItemByPartitionKey error", error);
     const dynamoDBError = new createError.InternalServerError(
