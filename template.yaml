@@ -78,7 +78,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/functions/GetTask
-      Handler: getTask.handler
+      Handler: handler.handler
       Runtime: nodejs18.x
       Timeout: 3
       MemorySize: 128
@@ -99,7 +99,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/functions/InsertTask
-      Handler: insertTask.handler
+      Handler: handler.handler
       Runtime: nodejs18.x
       Timeout: 3
       MemorySize: 128

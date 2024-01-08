@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "description": "Insert task function",
-  "main": "insertTask.js",
+  "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,7 +11,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "http-status-codes": "^2.3.0",
+    "@middy/core": "^5.2.1",
+    "@middy/http-error-handler": "^5.2.1",
+    "@middy/http-json-body-parser": "^5.2.1",
+    "@middy/http-response-serializer": "^5.2.1",
+    "@middy/validator": "^5.2.1",
+    "http-errors": "^2.0.0",
     "short-uuid": "^4.2.2"
   }
 }
