@@ -33,6 +33,12 @@ Resources:
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
 
+  # S3 Butcket for upload files
+  TaskFileBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: task-files-bucket
+
   # API Gateway
   TaskRestApi:
     Type: AWS::Serverless::Api
@@ -116,6 +122,30 @@ Resources:
             Method: POST
             RestApiId: !Ref TaskRestApi
 
+  UploadFileTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/UploadFileTask
+      Handler: handler.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref TaskFileBucket
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref TaskFileBucket
+      Events:
+        UploadFileTaskApi:
+          Type: Api
+          Properties:
+            Path: /upload
+            Method: POST
+            RestApiId: !Ref TaskRestApi
+
   # UpdateTask:
   #   Type: AWS::Serverless::Function
   #   Properties:
@@ -169,6 +199,10 @@ Outputs:
   DynamoDBTableName:
     Description: "DynamoDB Table Name"
     Value: !Ref TaskTable
+
+  TaskFileBucketName:
+    Description: "S3 Bucket Name"
+    Value: !Ref TaskFileBucket
 
   # PaginationTasks:
   #   Description: "PaginationTasks Lambda Function ARN"

@@ -3,7 +3,7 @@ import {
   PUT_PARAMS_TEMPLATE,
   GET_PARAMS_TEMPLATE,
   DELETE_PARAMS_TEMPLATE,
-} from "./constants.js";
+} from "./templates.js";
 
 const TASK_TABLE = process.env.TASK_TABLE;
 

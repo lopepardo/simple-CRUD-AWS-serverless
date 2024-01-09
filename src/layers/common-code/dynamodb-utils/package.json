@@ -1,8 +1,8 @@
 {
-  "name": "common-code-layer",
+  "name": "dynamodb-utils",
   "type": "module",
   "version": "1.0.0",
-  "description": "Common code layer for all lambda functions",
+  "description": "DynamoDB utils for all lambda functions",
   "main": "index.js",
   "scripts": {
     "build": "npm install && mkdir -p nodejs && cp -r node_modules nodejs/ && zip -r  {file-name}.zip nodejs"

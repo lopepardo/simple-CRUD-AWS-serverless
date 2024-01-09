@@ -1,8 +1,8 @@
 {
-  "name": "insert-task-function",
+  "name": "upload-file-task-function",
   "type": "module",
   "version": "1.0.0",
-  "description": "Insert task function",
+  "description": "Upload file task function",
   "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -13,10 +13,9 @@
   "dependencies": {
     "@middy/core": "^5.2.2",
     "@middy/http-error-handler": "^5.2.2",
-    "@middy/http-json-body-parser": "^5.2.2",
+    "@middy/http-multipart-body-parser": "^5.2.2",
     "@middy/http-response-serializer": "^5.2.2",
     "@middy/validator": "^5.2.2",
-    "http-errors": "^2.0.0",
-    "short-uuid": "^4.2.2"
+    "http-errors": "^2.0.0"
   }
 }
