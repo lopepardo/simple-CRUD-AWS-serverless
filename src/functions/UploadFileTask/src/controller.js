@@ -1,18 +1,14 @@
 import createError from "http-errors";
 
-import { uploadFile } from "/opt/s3-utils/index.js";
+import { uploadS3Object } from "/opt/s3-utils/index.js";
 
 export default async (event) => {
   const { imageFile } = event.body;
-
+  const { filename, content, mimetype } = imageFile;
   try {
-    await uploadFile({
-      name: imageFile.filename,
-      data: imageFile.content,
-      type: imageFile.mimetype,
-    });
+    await uploadS3Object(filename, content, mimetype);
   } catch (error) {
-    console.log("uploadFile error", error);
+    console.log("uploadS3Object error", error);
     const S3Error = new createError.InternalServerError(
       "Internal server error"
     );

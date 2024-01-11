@@ -146,26 +146,25 @@ Resources:
             Method: POST
             RestApiId: !Ref TaskRestApi
 
-  # UpdateTask:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     CodeUri: app
-  #     Handler: src/functions/updateTask.handler
-  #     Runtime: nodejs18.x
-  #     Timeout: 3
-  #     MemorySize: 128
-  #     EphemeralStorage:
-  #       Size: 512
-  #     Policies:
-  #       DynamoDBWritePolicy:
-  #         TableName: !Ref TaskTable
-  #     Events:
-  #       UpdateTaskApi:
-  #         Type: Api
-  #         Properties:
-  #           Path: /update
-  #           Method: PUT
-  #           RestApiId: !Ref TaskRestApi
+  UpdateTask:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/functions/UpdateTask
+      Handler: handler.handler
+      Runtime: nodejs18.x
+      Timeout: 3
+      MemorySize: 128
+      EphemeralStorage:
+        Size: 512
+      Policies:
+        DynamoDBWritePolicy:
+          TableName: !Ref TaskTable
+      Events:
+        UpdateTaskS3Notification:
+          Type: S3
+          Properties:
+            Bucket: !Ref TaskFileBucket
+            Events: s3:ObjectCreated:*
 
   DeleteTask:
     Type: AWS::Serverless::Function
@@ -216,9 +215,9 @@ Outputs:
     Description: "InsertTask Lambda Function ARN"
     Value: !GetAtt InsertTask.Arn
 
-  # UpdateTask:
-  #   Description: "UpdateTask Lambda Function ARN"
-  #   Value: !GetAtt UpdateTask.Arn
+  UpdateTask:
+    Description: "UpdateTask Lambda Function ARN"
+    Value: !GetAtt UpdateTask.Arn
 
   DeleteTask:
     Description: "DeleteTask Lambda Function ARN"

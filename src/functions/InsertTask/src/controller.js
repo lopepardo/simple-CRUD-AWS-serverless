@@ -1,7 +1,7 @@
 import shortUUID from "short-uuid";
 import createError from "http-errors";
 
-import { createItem } from "/opt/dynamodb-utils/index.js";
+import { createDynamodbItem } from "/opt/dynamodb-utils/index.js";
 
 export default async (event) => {
   let { name, description } = event.body;
@@ -16,9 +16,9 @@ export default async (event) => {
   };
 
   try {
-    await createItem(newTask);
+    await createDynamodbItem(newTask);
   } catch (err) {
-    console.error("createItem error", err);
+    console.error("createDynamodbItem error", err);
     const dynamoDBError = new createError.InternalServerError(
       "Internal server error"
     );

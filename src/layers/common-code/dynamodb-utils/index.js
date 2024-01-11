@@ -3,11 +3,17 @@ import {
   PUT_PARAMS_TEMPLATE,
   GET_PARAMS_TEMPLATE,
   DELETE_PARAMS_TEMPLATE,
+  UPDATE_PARAMS_TEMPLATE,
 } from "./templates.js";
+import { generateDynamoExpressions } from "./utils.js";
 
 const TASK_TABLE = process.env.TASK_TABLE;
 
-export const createItem = async (objectItem) => {
+export const createDynamodbItem = async (objectItem) => {
+  if (!objectItem) {
+    throw new Error("No objectItem was provided");
+  }
+
   const params = structuredClone(PUT_PARAMS_TEMPLATE);
   params.TableName = TASK_TABLE;
   params.Item = objectItem;
@@ -17,45 +23,69 @@ export const createItem = async (objectItem) => {
   await dynamodb.put(params);
 };
 
-export const getItemByPartitionKey = async (pkName, pkValue) => {
+export const queryDynamodbItem = async (pkName, pkValue) => {
+  if (!pkName) {
+    throw new Error("No pkName was provided");
+  }
+  if (!pkValue) {
+    throw new Error("No pkValue was provided");
+  }
+
   const params = structuredClone(GET_PARAMS_TEMPLATE);
   params.TableName = TASK_TABLE;
   params.KeyConditionExpression = `${pkName} = :id`;
   params.ExpressionAttributeValues = {
     ":id": pkValue,
   };
-  console.log("PARAMS --> ", params);
+  console.log("PARAMS --> ", JSON.stringify(params));
 
   const { Items } = await dynamodb.query(params);
   return Items;
 };
 
-export const deleteItem = async (pkName, pkValue) => {
+export const deleteDynamodbItem = async (pkName, pkValue) => {
+  if (!pkName) {
+    throw new Error("No pkName was provided");
+  }
+  if (!pkValue) {
+    throw new Error("No pkValue was provided");
+  }
+
   const params = structuredClone(DELETE_PARAMS_TEMPLATE);
   params.TableName = TASK_TABLE;
   params.Key = {
     [pkName]: pkValue,
   };
 
-  console.log("PARAMS --> ", params);
+  console.log("PARAMS --> ", JSON.stringify(params));
   const result = await dynamodb.delete(params);
   return !!result?.Attributes;
 };
 
-// const updateDynamodbItem = (updateParams) => {
-//   const dynamoDb = new AWS.DynamoDB.DocumentClient();
-//   return new Promise((resolve, reject) => {
-//     dynamoDb.update(updateParams, function (error, data) {
-//       if (error) {
-//         console.log(error);
-//         const httpError = new ErrorHandler(
-//           StatusCodes.SERVICE_UNAVAILABLE,
-//           "Could not update item"
-//         );
-//         reject(httpError);
-//       } else {
-//         resolve(data);
-//       }
-//     });
-//   });
-// };
+export const updateDynamodbItem = async (pkName, pkValue, valuesObject) => {
+  if (!pkName) {
+    throw new Error("No pkName was provided");
+  }
+  if (!pkValue) {
+    throw new Error("No pkValue was provided");
+  }
+  if (!valuesObject) {
+    throw new Error("No valuesObject was provided");
+  }
+
+  const params = structuredClone(UPDATE_PARAMS_TEMPLATE);
+  params.TableName = TASK_TABLE;
+  params.Key = {
+    [pkName]: pkValue,
+  };
+
+  const [expression, attributeNames, attributeValues] =
+    generateDynamoExpressions(valuesObject);
+  params.UpdateExpression = "SET " + expression;
+  params.ExpressionAttributeNames = attributeNames;
+  params.ExpressionAttributeValues = attributeValues;
+
+  console.log("PARAMS --> ", JSON.stringify(params));
+  const result = await dynamodb.update(params);
+  return result?.Attributes;
+};

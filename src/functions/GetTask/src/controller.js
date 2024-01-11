@@ -5,16 +5,16 @@
 
 import createError from "http-errors";
 
-import { getItemByPartitionKey } from "/opt/dynamodb-utils/index.js";
+import { queryDynamodbItem } from "/opt/dynamodb-utils/index.js";
 
 export default async (event) => {
   const { taskId } = event.body;
 
   let item;
   try {
-    item = await getItemByPartitionKey("id", taskId);
+    item = await queryDynamodbItem("id", taskId);
   } catch (error) {
-    console.log("getItemByPartitionKey error", error);
+    console.log("queryDynamodbItem error", error);
     const dynamoDBError = new createError.InternalServerError(
       "Internal server error"
     );
