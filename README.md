@@ -44,7 +44,7 @@ La arquitectura del proyecto se basa en los siguientes servicios de AWS:
 
 - **AWS SAM:** Se utiliza para facilitar la gestión de la implementación y el despliegue de la aplicación, optimizando así el manejo de recursos y la configuración asociada.
 
-### Servicos implicitos:
+### Servicios implícitos:
 
 - **CloudFormation**: Gestiona la infraestructura del proyecto con código.
 - **IAM**: Gestiona los permisos de los recursos del proyecto.
@@ -74,7 +74,7 @@ Para instalar AWS SAM CLI en tu computadora, sigue las instrucciones de la [pág
 
 Para configurar las credenciales de AWS en tu computadora, sigue las instrucciones de la [página oficial](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html).
 
-## Estructura del Proyecto
+## 📂 Estructura del Proyecto
 
 ```bash
 .
@@ -112,7 +112,7 @@ Para configurar las credenciales de AWS en tu computadora, sigue las instruccion
 └── template.yaml                           # Plantilla de SAM para creación de los recursos
 ```
 
-## Despliegue del Proyecto
+## 🛫 Despliegue del Proyecto
 
 Antes de ejecutar el despliegue del proyecto, debes instalar las dependencias de las funciones Lambda y las capas de funciones. Para ello, ejecuta el siguiente comando dentro de la carpeta raíz de cada función y capa de funciones:
 
@@ -140,7 +140,7 @@ sam delete
 
 > **Nota:** El comando `sam delete` elimina los recursos creados por SAM en la cuenta de AWS.
 
-## Apreciaciones finales
+## 💡 Apreciaciones finales
 
 A lo largo del desarrollo de este proyecto, se han identificado y abordado diversos aspectos cruciales para la implementación de aplicaciones serverless en AWS. A continuación, se enumeran algunos de estos puntos fundamentales:
 
@@ -165,7 +165,7 @@ A lo largo del desarrollo de este proyecto, se han identificado y abordado diver
 - **Seguridad:**<br>
   La implementación de prácticas de seguridad es esencial. Esto incluye el uso adecuado de roles de IAM para limitar los privilegios y la aplicación de cifrado para proteger datos sensibles.
 
-## Referencias
+## 🔎 Referencias
 
 - [Node.js](https://nodejs.org/en/)
 - [Middy](https://middy.js.org/)
@@ -173,6 +173,6 @@ A lo largo del desarrollo de este proyecto, se han identificado y abordado diver
 - [AWS SDK for JavaScript v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/index.html)
 - [Prácticas recomendadas para trabajar con funciones AWS Lambda](https://docs.aws.amazon.com/es_es/lambda/latest/dg/best-practices.html)
 
-## Licencia
+## 📃 Licencia
 
 Este proyecto está bajo la Licencia MIT. Puedes consultar el archivo LICENSE para más información.
