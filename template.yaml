@@ -1,10 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  Dynamo CRUD App
+  simple-crud-aws-serverless
 
-  Simple CRUD using AWS Lambda with NodeJS, Api Gateway and DynamoDB, 
-  leveraging AWS SAM for project infrastructure management.
+  This project aims to create a simple CRUD (Create, Read, Update, Delete) functionality 
+  using technologies such as AWS Lambda with Node.js, S3, API Gateway, and DynamoDB.
 
 Globals:
   Function:
